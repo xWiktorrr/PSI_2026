@@ -5,8 +5,6 @@
 
 Projekt przedstawia koncepcję systemu informatycznego wspierającego działalność sieci salonów samochodowych. System ma na celu usprawnienie zarządzania sprzedażą nowych samochodów, kontrolą stanów magazynowych oraz obsługą dostaw pojazdów od producentów.
 
-Projekt realizowany jest w ramach przedmiotu **Projektowanie Systemów Informatycznych**.
-
 ---
 
 ## Cel firmy
