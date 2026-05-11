@@ -1,0 +1,127 @@
+CREATE TABLE Klienci (
+    idKlienta INT PRIMARY KEY AUTO_INCREMENT,
+    imie VARCHAR(50) NOT NULL,
+    nazwisko VARCHAR(50) NOT NULL,
+    telefon VARCHAR(20)
+);
+
+CREATE TABLE Sprzedawcy (
+    idSprzedawcy INT PRIMARY KEY AUTO_INCREMENT,
+    imie VARCHAR(50) NOT NULL,
+    nazwisko VARCHAR(50) NOT NULL,
+    stanowisko VARCHAR(50)
+);
+
+CREATE TABLE Producenci (
+    idProducenta INT PRIMARY KEY AUTO_INCREMENT,
+    nazwa VARCHAR(50) NOT NULL,
+    kraj VARCHAR(50)
+);
+
+CREATE TABLE Samochody (
+    VIN VARCHAR(20) PRIMARY KEY,
+    marka VARCHAR(50) NOT NULL,
+    model VARCHAR(50) NOT NULL,
+    cena DECIMAL(10,2) NOT NULL,
+    status VARCHAR(30),
+
+    idProducenta INT,
+
+    FOREIGN KEY (idProducenta)
+    REFERENCES Producenci(idProducenta)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE Zamowienia (
+    idZamowienia INT PRIMARY KEY AUTO_INCREMENT,
+    dataZamowienia DATE NOT NULL,
+    status VARCHAR(30),
+
+    idKlienta INT NOT NULL,
+    idSprzedawcy INT NOT NULL,
+    VIN VARCHAR(20) NOT NULL,
+
+    FOREIGN KEY (idKlienta)
+    REFERENCES Klienci(idKlienta)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+
+    FOREIGN KEY (idSprzedawcy)
+    REFERENCES Sprzedawcy(idSprzedawcy)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+
+    FOREIGN KEY (VIN)
+    REFERENCES Samochody(VIN)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE Magazyny (
+    idMagazynu INT PRIMARY KEY AUTO_INCREMENT,
+    nazwa VARCHAR(100),
+    lokalizacja VARCHAR(100)
+);
+
+CREATE TABLE MagazynSamochody (
+    idMagazynu INT,
+    VIN VARCHAR(20),
+
+    PRIMARY KEY (idMagazynu, VIN),
+
+    FOREIGN KEY (idMagazynu)
+    REFERENCES Magazyny(idMagazynu)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+
+    FOREIGN KEY (VIN)
+    REFERENCES Samochody(VIN)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE Transfery (
+    idTransferu INT PRIMARY KEY AUTO_INCREMENT,
+    dataTransferu DATE,
+    status VARCHAR(30),
+
+    VIN VARCHAR(20),
+
+    magazynZrodlowy INT,
+    magazynDocelowy INT,
+
+    FOREIGN KEY (VIN)
+    REFERENCES Samochody(VIN)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+
+    FOREIGN KEY (magazynZrodlowy)
+    REFERENCES Magazyny(idMagazynu)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE,
+
+    FOREIGN KEY (magazynDocelowy)
+    REFERENCES Magazyny(idMagazynu)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE Dostawy (
+    idDostawy INT PRIMARY KEY AUTO_INCREMENT,
+    dataDostawy DATE,
+    status VARCHAR(30),
+
+    idProducenta INT,
+    VIN VARCHAR(20),
+
+    FOREIGN KEY (idProducenta)
+    REFERENCES Producenci(idProducenta)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE,
+
+    FOREIGN KEY (VIN)
+    REFERENCES Samochody(VIN)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
